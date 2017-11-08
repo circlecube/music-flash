@@ -63,9 +63,11 @@ var app = new Vue({
 			vrv_options: null,
 			svg: null,
 			notes: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
-			octaves: [1, 2, 3],
+			octaves: [1, 2],
 			clefs: ['treble', 'bass'],
-			note_length: 4
+			note_length: 4,
+			test_clef: 'both', //'treble', 'bass', 'both'
+			note: {}, //note object to store current card values
 		},
 
 		methods: {
@@ -206,13 +208,13 @@ var app = new Vue({
 
 				//set clef
 				if ( args.clef === 'bass' ) {
-					pe_clef = 'F-2';
+					pe_clef = 'F-4';
 				} else {
 					pe_clef = 'G-2';
 				}
 
 				if ( args.clef === 'bass' &&
-					 args.octave > 1 ) {
+					 args.octave >= 1 ) {
 					args.octave *= -1;
 				}
 				//set octave
@@ -249,34 +251,28 @@ var app = new Vue({
 			},
 
 			getAnswer(){
-				//based on operation, calculate the correct answer
-				switch(this.operation){
-					case '+':
-						return this.active_val + this.passive_val;
-					case '-':
-						return this.active_val - this.passive_val;
-					case '×':
-						return this.active_val * this.passive_val;
-					case '÷':
-						return this.active_val / this.passive_val;
-					default:
-						return this.active_val + this.passive_val;
-				}
+				return this.note.note;
 			},
 
 			getRandomValues(){
 				// console.log('getRandomValues() called');
-				
-				//clef - treble for now (default)
+				this.note.clef = this.clefs[0];
+				//clef - if set to both, pick one randomly, otherwise, send the setting in
+				if ( this.test_clef === 'both' ) {
+					this.note.clef = this.clefs[Math.floor(Math.random() * this.clefs.length)]
+				} else {
+					this.note.clef = this.test_clef;
+				}
 				//random note
-				var new_note = this.notes[Math.floor(Math.random() * this.notes.length)];
+				this.current_note = this.notes[Math.floor(Math.random() * this.notes.length)];
 				//random octave
-				var new_octave = this.octaves[Math.floor(Math.random() * this.octaves.length)];
+				this.note.octave = this.octaves[Math.floor(Math.random() * this.octaves.length)];
 				//constant note length
-				console.log(new_note, new_octave);
+				console.log(this.note.clef, this.note.note, this.note.octave);
 				this.set_svg( this.generate_Plaine_Easie({
-						note: new_note,
-						octave: new_octave
+						clef: this.note.clef,
+						note: this.note.note,
+						octave: this.note.octave
 					})
 				);
 
@@ -387,10 +383,11 @@ var app = new Vue({
 				//get three other answers - random differences from the range
 				while( this.answers.length < 4 ) {
 					this.answers.push( { 
-						value: this.random(this.answers, this.range_answer),
+						value: this.notes[Math.floor(Math.random() * this.notes.length)],
 						state: 'on',
 						iscorrect: false
 					} );
+
 				}
 				// console.table(answers);
 				// make sure answers are unique

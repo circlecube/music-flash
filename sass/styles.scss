@@ -452,8 +452,8 @@ h4 {
 		grid-template-rows: auto;
 		grid-column-gap: 1rem;
 		grid-row-gap: 1rem;
-		grid-template-areas: "- term1"
-							 "operand term2"
+		grid-template-areas: "- -"
+							 "question question"
 							 "answer answer"
 							 "answer answer";
 		.term1 {
@@ -529,4 +529,11 @@ h4 {
 		}
 	}
 
+}
+
+
+#svg {
+	max-width: 100%;
+	max-height: 300px;
+	overflow: hidden;
 }

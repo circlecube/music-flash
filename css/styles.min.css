@@ -75,7 +75,7 @@ button.info,.button.info{background-color:rgba(153,153,153,0.5);border-color:rgb
 .progressgrade:after{content:'%'}
 .progressbar-enter{width:0 !important}
 h4{font-size:1.25rem;font-family:sans-serif;font-weight:100}
-.cssgrid .card .front{padding:1rem 2rem 1rem 1rem;display:grid;grid-template-columns:50% 50%;grid-template-rows:auto;grid-column-gap:1rem;grid-row-gap:1rem;grid-template-areas:"- term1" "operand term2" "answer answer" "answer answer"}
+.cssgrid .card .front{padding:1rem 2rem 1rem 1rem;display:grid;grid-template-columns:50% 50%;grid-template-rows:auto;grid-column-gap:1rem;grid-row-gap:1rem;grid-template-areas:"- -" "question question" "answer answer" "answer answer"}
 .cssgrid .card .front .term1{grid-area:term1}
 .cssgrid .card .front .term2{grid-area:term2}
 .cssgrid .card .front .operand{grid-area:operand;padding:.5rem 0}
@@ -89,3 +89,4 @@ h4{font-size:1.25rem;font-family:sans-serif;font-weight:100}
 .cssgrid .card .back .appoptions{grid-area:appoptions;border-top:5px solid #999;text-align:left}
 .cssgrid .card .back .log{grid-area:log}
 .cssgrid .card .back .term,.cssgrid .card .back .operand{width:100%;float:none}
+#svg{max-width:100%;max-height:300px;overflow:hidden}
