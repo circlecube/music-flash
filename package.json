@@ -1,0 +1,42 @@
+{
+  "name": "music-flash",
+  "version": "2017.11.07",
+  "description": "Music notes on flash cards app",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --record --key 86dd3c7e-a64f-44e5-bf16-0c6eacdebd19",
+    "start": "http-server -p 8888 -c-1",
+    "start:ci": "http-server -p 8888 -c-1 --silent",
+    "test": "npm run start & cypress run --record --key 86dd3c7e-a64f-44e5-bf16-0c6eacdebd19",
+    "test:ci": "run-p --race start:ci cypress:run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/circlecube/music-flash.git"
+  },
+  "author": "circlecube",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/circlecube/music-flash/issues"
+  },
+  "homepage": "https://github.com/circlecube/music-flash#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "cypress": "^1.0.3",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-filter": "^5.0.1",
+    "gulp-imagemin": "^3.4.0",
+    "gulp-line-ending-corrector": "^1.0.1",
+    "gulp-merge-media-queries": "^0.2.1",
+    "gulp-notify": "^3.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sort": "^2.0.0",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^1.5.4",
+    "gulp-uglifycss": "^1.0.8",
+    "http-server": "^0.10.0"
+  }
+}
