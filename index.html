@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Music Flash Cards</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/styles.min.css">
+</head>
+
+<body>
+	<main id="app">
+		
+		<div class="container">
+			<div class="card" v-bind:data-card="cardstate" v-bind:class="state" v-bind:data-errors="errors" v-bind:data-valids="valids" v-bind:data-answers="answer_count">
+
+				<figure class="front">
+					<button id="cog" class="top left gray" @click="flipcard()" title="Options"><i class="fa fa-cog"></i></button>
+
+					<div class="question">
+						<div id="svg" v-html="svg"></div>
+					</div>
+
+					<div class="answers" v-bind:data-state="state" v-bind:data-mode="mode">
+						<div class="answer" v-for="(answer, i) in answers" v-bind:class="answer.state" v-text="answer.value" @click="( 
+							mode !== 'test' ||
+							state === 'on' && 
+							answer.state === 'on' ? 
+								checkAnswer(i) : 
+								null
+							)" v-bind:data-color="answer_color" v-bind:data-iscorrect="answer.iscorrect" v-bind:data-incorrect="!answer.iscorrect"></div>
+					</div>
+				</figure>
+
+				<figure class="back">
+
+					<button id="close" class="top left red" @click="flipcard()" title="Options"><i class="fa fa-times"></i></button>
+					<button id="ok" class="top right green" @click="reset()" title="OK">
+						<i class="fa fa-check"></i>
+					</button>
+					<button id="logs" class="bottom left lblue" v-bind:class="{ 'dblue' : displaylogs }" @click="displaylog()" title="View Log">
+						<i class="fa fa-list"></i>
+					</button>
+
+					<div class="title">
+						<!-- <h4>Card Options</h4> -->
+					</div>
+					<div class="option term term1" v-bind:class="{ 'hide' : displaylogs }">
+						<label><span>Top: </span>
+							<select id="term1select" v-model="actives" v-on:change="setRanges()">
+								<optgroup label="Single Value">
+									<option value="0-0">0</option>
+									<option value="1-1">1</option>
+									<option value="2-2">2</option>
+									<option value="3-3">3</option>
+									<option value="4-4">4</option>
+									<option value="5-5">5</option>
+									<option value="6-6">6</option>
+									<option value="7-7">7</option>
+									<option value="8-8">8</option>
+									<option value="9-9">9</option>
+									<option value="10-10">10</option>
+									<option value="11-11">11</option>
+									<option value="12-12">12</option>
+								</optgroup>
+								<optgroup label="Range of Values">
+									<option value="0-10">0-10</option>
+									<option value="0-12">0-12</option>
+									<option value="0-20">0-20</option>
+									<option value="10-20">10-20</option>
+									<option value="0-50">0-50</option>
+									<option value="0-100">0-100</option>
+								</optgroup>
+							</select>
+						</label>
+					</div>
+					<div class="option operand" v-bind:class="{ 'hide' : displaylogs }">
+						<label><span>Operation: </span>
+							<select id="operationselect" v-model="operation" v-on:change="setDefaultRanges()">
+								<option value="+">&nbsp;+&nbsp;</option>
+								<option value="-">&nbsp;-&nbsp;</option>
+								<option value="×">&nbsp;×&nbsp;</option>
+								<option value="÷">&nbsp;÷&nbsp;</option>
+							</select>
+						</label>
+					</div>
+					<div class="option term term2" v-bind:class="{ 'hide' : displaylogs }">
+						<label><span>Bottom: </span>
+							<select id="term2select" v-model="passives" v-on:change="setRanges()">
+								<optgroup label="Single Value">
+									<option value="0-0">0</option>
+									<option value="1-1">1</option>
+									<option value="2-2">2</option>
+									<option value="3-3">3</option>
+									<option value="4-4">4</option>
+									<option value="5-5">5</option>
+									<option value="6-6">6</option>
+									<option value="7-7">7</option>
+									<option value="8-8">8</option>
+									<option value="9-9">9</option>
+									<option value="10-10">10</option>
+									<option value="11-11">11</option>
+									<option value="12-12">12</option>
+								</optgroup>
+								<optgroup label="Range of Values">
+									<option value="0-10">0-10</option>
+									<option value="0-12">0-12</option>
+									<option value="0-20">0-20</option>
+									<option value="10-20">10-20</option>
+									<option value="0-50">0-50</option>
+									<option value="0-100">0-100</option>
+								</optgroup>
+							</select>
+						</label>
+					</div>
+
+					<div class="appoptions" v-bind:class="{ 'hide' : displaylogs }">
+						<div class="option mode">
+							<!-- <h4>App Options</h4> -->
+							<label><span>Mode: </span>
+								<select id="modeselect" v-model="mode">
+									<option value="practice">Practice Mode</option>
+									<option value="test">Test Mode</option>
+								</select>
+								<button class="info" @click="toggleinfomode()" title="?"><i class="fa fa-info"></i></button>
+								
+								<dl class="infomode" v-if="infomode == true">
+									<dt>Practice Mode</dt>
+									<dd>Play will continue forever. This is for practicing.</dd>
+									<dt>Test Mode</dt>
+									<dd>Set a certian number of cards and receive a score.</dd>
+								</dl>
+							</label>
+						</div>
+						<div class="option number" v-if="mode == 'test'">
+							<label><span>Number of Cards: </span>
+								<select id="testnumberselect" v-model.number="total_cards">
+									<option value="5">5 cards</option>
+									<option value="10">10 cards</option>
+									<option value="20">20 cards</option>
+									<option value="25">25 cards</option>
+									<option value="50">50 cards</option>
+									<option value="100">100 cards</option>
+								</select>
+							</label>
+						</div>
+					</div>
+					
+					<div class="log" v-bind:class="{ 'hide' : !displaylogs }">
+						<h4>Activity Log <button id="delete_logs" class="info" @click="clearlog()" title="Clear Log">
+							<i class="fa fa-trash-o"></i>
+						</button></h4>
+						
+						<table class="log">
+							<thead>
+								<tr>
+									<th>Type</th>
+									<th>Total</th>
+									<th>Duration</th>
+									<th>Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="log in logs">
+									<td class="operation">[{{ log.terms_active }}] {{ log.operation }} [{{ log.terms_passive }}]</td>
+									<td class="total">{{ log.correct }}/{{ log.total }}</td>
+									<td class="duration">{{ log.duration }} sec</td>
+									<td class="time">{{ log.time | relativetime }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</figure>
+
+			</div>
+		</div>
+		<span class="progressgrade" v-text="grade"></span>
+		<transition-group tag="div" name="progressbar" class="progressbar" v-bind:data-total="total_cards">
+			<span class="bar" v-for="record in progressrecord" v-bind:class="record.state" v-bind:data-total="total_cards" v-bind:data-count="record.count" :key="record.count" v-bind:style="progresswidthcss()"></span>
+		</transition-group>
+	</main>
+	<script src="js/verovio-toolkit.js"></script>
+	<script src="js/vendors.min.js"></script>
+	<script src="js/scripts.min.js"></script>
+</body>
+
+</html>

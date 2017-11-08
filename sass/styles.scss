@@ -1,0 +1,532 @@
+$color_white:	#fff;
+$color_light:	#eee;
+$color_green:	#99cc33;
+$color_lblue:	#0DE7FF;
+$color_dblue:	#3399cc;
+$color_aquag:	#33cc99;
+$color_purpl:	#9933cc;
+$color_red:		#CC3214;
+$color_gray:	#999999;
+
+
+@font-face {
+	font-family: 'marvinvisions';
+	src: url('../fonts/MarvinVisions/MarvinVisions-Bold.eot?v=4.6.3');
+	src: url('../fonts/MarvinVisions/MarvinVisions-Bold.eot?#iefix&v=4.6.3') format('embedded-opentype'), 
+	url('../fonts/MarvinVisions/MarvinVisions-Bold.woff2?v=4.6.3') format('woff2'), 
+	url('../fonts/MarvinVisions/MarvinVisions-Bold.woff?v=4.6.3') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.hide {
+	display: none;
+}
+body {
+	font-size: 16px;
+	font-family: 'marvinvisions';
+}
+
+* {
+	box-sizing: border-box;
+}
+
+#app {
+	width: 100%;
+	height: 100%;
+}
+
+.container {
+	position: relative;
+	perspective: 2000px;
+	max-width: 600px;
+	min-height: 590px;
+	margin: 1rem auto;
+}
+
+.card {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	padding: 100% 0 0;
+	font-size: 5rem;
+	user-select: none;
+
+	figure {
+		margin: 0;
+		display: block;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		backface-visibility: hidden;
+		padding: 1rem;
+		transition: all .75s ease;
+		transform-style: preserve-3d;
+		border: 5px solid $color_gray;
+		border-radius: 1rem;
+		transform: none;
+		
+		&.back {
+			background: $color_white;
+		}
+	}
+
+	&[data-card="front"] {
+		.front {
+			transform: rotateY( 0deg );
+		}
+		.back {
+			transform: rotateY( 180deg );
+		}
+	}
+
+	&[data-card="back"] {
+		.front {
+			transform: rotateY( -180deg );
+		}
+		.back {
+			transform: rotateY( 0deg );
+		}
+	}
+}
+
+.card.on {
+	border-color: $color_gray;
+}
+.card.valid {
+	border-color: $color_green;
+}
+.card.error {
+	border-color: $color_red;
+}
+.card.end {
+	border-color: $color_purpl;
+}
+.ui {
+	position: absolute;
+	top:0;
+	left:0;
+	margin: 0;
+	padding: 0;
+	font-size: 1rem;
+
+	button {
+		border-bottom-right-radius: .75rem;
+	}
+}
+
+.grade {
+
+}
+.grade:after {
+	content: '%';
+}
+.term {
+	float: right;
+	width: 51%;
+	text-align: center;
+	padding: .5rem 0;
+}
+.operand {
+	text-align: center;
+	padding: 6rem 0 0;
+	float: left;
+	width: 48%;
+}
+.answers {
+	border-top: 5px solid $color_gray;
+	padding: 1rem 0 0;
+	margin: 0 1rem 0 0;
+	width: 100%;
+	clear: both;
+}
+.answer {
+	text-align: center;
+	padding: .75rem 0;
+	background: $color_light;
+	cursor: pointer;
+	transition: all .2s ease;
+	width: 48.5%;
+	margin: 0;
+	float: left;
+
+	&:first-child {
+		margin-bottom: 3%;
+	}
+	&:nth-child(odd) {
+		margin-right: 3%;
+	}
+}
+.answer:hover {
+	/*background: #ddd;*/
+}
+.answer.valid {
+	background: $color_green;
+}
+.answer.error {
+	background: $color_red;
+}
+
+.answer[data-color] {
+	position: relative;
+}
+.answer[data-color]:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: .25;
+	transition: .25s all ease;
+}
+.answer[data-color="1"]:after {
+	background: $color_aquag;
+}
+.answer[data-color="2"]:after {
+	background: $color_lblue;
+}
+.answer[data-color="3"]:after {
+	background: $color_dblue;
+}
+.answer[data-color="4"]:after {
+	background: $color_aquag;
+}
+.answer[data-color="5"]:after {
+	background: $color_purpl;
+}
+.answer[data-color="6"]:after {
+	background: $color_purpl;
+}
+.answer[data-color="7"]:after {
+	background: $color_lblue;
+}
+.answer[data-color="8"]:after {
+	background: $color_dblue;
+}
+.answer[data-color="9"]:after {
+	background: $color_green;
+}
+.answer[data-color="10"]:after {
+	background: $color_red;
+}
+.card.valid .answer[data-color]:after,
+.card.error .answer[data-color]:after {
+	opacity:0;
+}
+
+
+
+.option {
+
+	span {
+		display: none;
+	}
+
+	&.operand {
+		// margin-top: 4.5rem;
+		padding-top: 7.5rem;
+		width: 48%;
+		text-align: right;
+	}
+
+	&.mode {
+		clear: both;
+		float: left;
+		width: 50%;
+	}
+
+	&.number {
+		// text-align: center;
+		// padding: 0 20%;
+		float: right;
+		width: 50%;
+	}
+}
+
+dl {
+	font-size: .8rem;
+	font-family: sans-serif;
+	
+	dt {
+		font-weight: bold;
+	}
+
+	dd {
+		margin: 0 0 .5rem;
+	}
+}
+
+select {
+	font-size: 1.5rem;
+	font-family: 'marvinvisions';
+	margin: 0;
+
+	.term &,
+	.operand & {
+		font-size: 3.5rem;
+		min-width: 8rem;
+		text-align: center;
+	}
+}
+
+button,
+.button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	border-radius: 0;
+	border-style: solid;
+	border-width: 0;
+	cursor: pointer;
+	font-weight: normal;
+	line-height: normal;
+	margin: 0;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	padding: 0.5rem 1rem 0.6rem 1rem;
+	font-size: 1.25rem;
+	background-color: $color_gray;
+	border-color: $color_gray;
+	color: $color_white;
+	outline: none;
+	transition: background-color 300ms ease-out;
+	position: absolute;
+
+	&.top {
+		top: 0;
+		bottom: initial;
+	}
+	&.bottom {
+		bottom: 0;
+		top: initial;
+	}
+	&.left {
+		left: 0;
+		right: initial;
+	}
+	&.right {
+		right: 0;
+		left: initial;
+	}
+	&.top.right,
+	&.bottom.left {
+		border-radius: 0;
+		border-bottom-left-radius: .6rem;
+		border-top-right-radius: .6rem;
+	}
+	&.top.left,
+	&.bottom.right {
+		border-radius: 0;
+		border-bottom-right-radius: .6rem;
+		border-top-left-radius: .6rem;
+	}
+	&.green {
+		background-color: $color_green;
+		border-color: $color_green;
+	}
+	&.lblue {
+		background-color: $color_lblue;
+		border-color: $color_lblue;
+	}
+	&.dblue {
+		background-color: $color_dblue;
+		border-color: $color_dblue;
+	}
+	&.red {
+		background-color: $color_red;
+		border-color: $color_red;
+	}
+	&.gray {
+		background-color: $color_gray;
+		border-color: $color_gray;
+	}
+
+	&.info {
+		background-color: rgba($color_gray, .5);
+		border-color: rgba($color_gray, .5);
+		border-radius: 50%;
+		width: 1.5rem;
+		height: 1.5rem;
+		font-size: 1rem;
+		display: block;
+		padding: 0;
+		position: relative;
+	}
+}
+
+.log button.info {
+	float: right;
+}
+
+.log {
+	width: 100%;
+	max-height: 90%;
+	overflow: scroll;
+
+	table{
+		font-size: 1rem;
+		font-family: sans-serif;
+		width: 100%;
+		border-spacing: 0px;
+		margin: 0 0 1rem;
+
+		thead {
+			background: rgba($color_lblue, .5);
+		}
+		tbody {
+			tr:nth-child(odd) {
+				background: rgba($color_gray, .05);
+			}
+			tr:nth-child(even) {
+				background: rgba($color_lblue, .15);
+			}
+		}
+		th,
+		td {
+			padding: .5rem;
+		}
+	}
+}
+
+
+
+.progressbar {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 1rem;
+	background: $color_light;
+	opacity: .9;
+}
+.progressbar .bar {
+	height: 1rem;
+	display: inline-block;
+	background: $color_green;
+	transition: width .2s ease;
+}
+.progressbar .bar.error {
+	background: $color_red;
+}
+.progressgrade {
+	position: absolute;
+	display: block;
+	bottom: 1rem;
+	right: 0;
+	height: 2rem;
+	width: 100%;
+	padding: .5rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-align: right;
+
+	&:after {
+		content: '%';
+	}
+}
+
+.progressbar-enter {
+	width: 0% !important;
+}
+
+h4 {
+	font-size: 1.25rem;
+	font-family: sans-serif;
+	font-weight: 100;
+}
+
+
+
+
+//css grid
+.cssgrid {
+	
+	.card .front {
+		padding: 1rem 2rem 1rem 1rem;
+		display: grid;
+		grid-template-columns: 50% 50%;
+		grid-template-rows: auto;
+		grid-column-gap: 1rem;
+		grid-row-gap: 1rem;
+		grid-template-areas: "- term1"
+							 "operand term2"
+							 "answer answer"
+							 "answer answer";
+		.term1 {
+			grid-area: term1;
+		}
+		.term2 {
+			grid-area: term2;
+		}
+		.operand {
+			grid-area: operand;
+			padding: .5rem 0;
+		}
+		.term,
+		.operand,
+		.answer {
+			width: 100%;
+			float: none;
+		}
+
+		.answers {
+			grid-area: answer;
+			display: grid;
+			grid-template-columns: auto auto;
+			grid-template-rows: auto;
+			grid-column-gap: 1rem;
+			grid-row-gap: 1rem;
+
+			padding: 1rem 0 0 0;
+			margin: 0;
+
+			.answer {
+				margin: 0;
+			}
+		}
+	}
+
+	.card .back {
+		padding: 1rem 2rem 1rem 1rem;
+		display: grid;
+		grid-template-columns: 50% 50%;
+		grid-template-rows: auto;
+		grid-column-gap: 1rem;
+		grid-row-gap: 1rem;
+		grid-template-areas: "title term1"
+							 "operand term2"
+							 "appoptions appoptions"
+							 "log log";
+
+		.term1 {
+			grid-area: term1;
+		}
+		.term2 {
+			grid-area: term2;
+		}
+		.operand {
+			grid-area: operand;
+			padding: .5rem 0;
+			margin: 0;
+		}
+		.appoptions {
+			grid-area: appoptions;
+			border-top: 5px solid $color_gray;
+			text-align: left;
+		}
+		.log {
+			grid-area: log;
+		}
+
+		.term,
+		.operand {
+			width: 100%;
+			float: none;
+		}
+	}
+
+}
