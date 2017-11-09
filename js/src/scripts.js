@@ -60,7 +60,15 @@ var app = new Vue({
 			card_timeout: null,
 			card_delay: 500,
 			vrv: null,
-			vrv_options: null,
+			vrv_options: {
+				pageHeight: 220,
+				pageWidth: 600,
+				scale: 150,
+				adjustPageHeight: 1,
+				ignoreLayout: 1,
+				border: 10,
+				font: 'Bravura',
+			},
 			svg: null,
 			notes: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
 			octaves: [1, 2],
@@ -423,15 +431,7 @@ var app = new Vue({
 			},
 
 			set_svg(data){
-				// this.vrv_options = {
-	   //              pageHeight: pageHeight,
-	   //              pageWidth: pageWidth,
-	   //              scale: zoom,
-	   //              adjustPageHeight: 1,
-	   //              ignoreLayout: 1
-	   //          };
-				this.svg = this.vrv.renderData(data);
-			    // this.vrv.setOptions(this.vrv_options);
+				this.svg = this.vrv.renderData(data, this.vrv_options);
 			},
 
 			setDefaultRanges(){
