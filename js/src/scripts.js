@@ -264,7 +264,7 @@ var app = new Vue({
 					this.note.clef = this.test_clef;
 				}
 				//random note
-				this.current_note = this.notes[Math.floor(Math.random() * this.notes.length)];
+				this.note.note = this.notes[Math.floor(Math.random() * this.notes.length)];
 				//random octave
 				this.note.octave = this.octaves[Math.floor(Math.random() * this.octaves.length)];
 				//constant note length
