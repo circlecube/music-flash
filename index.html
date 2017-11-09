@@ -110,7 +110,7 @@
 							</thead>
 							<tbody>
 								<tr v-for="log in logs">
-									<td class="operation">[{{ log.terms_active }}] {{ log.operation }} [{{ log.terms_passive }}]</td>
+									<td class="operation">{{ log.clef }}</td>
 									<td class="total">{{ log.correct }}/{{ log.total }}</td>
 									<td class="duration">{{ log.duration }} sec</td>
 									<td class="time">{{ log.time | relativetime }}</td>

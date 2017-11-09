@@ -304,10 +304,7 @@ var app = new Vue({
 					grade: this.grade,
 					correct: this.valids,
 					total: this.total_cards,
-					operationlabel: this.operationlabel[this.operation],
-					operation: this.operation,
-					terms_active: terms_active,
-					terms_passive: terms_passive,
+					clef: this.test_clef,
 					duration: this.duration,
 					time: new Date(),
 				};
