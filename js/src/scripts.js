@@ -262,8 +262,50 @@ var app = new Vue({
 				return this.note.note;
 			},
 
-			getRandomValues(){
-				// console.log('getRandomValues() called');
+			getRandomAnswers(){
+				// console.log('getRandomAnswers() called');
+				this.answers = [];
+				// get the correct answer
+				var correct = this.getAnswer();
+
+				this.answers.push( { 
+					value: correct,
+					state: 'on', //valid, correct 
+					iscorrect: true
+				} );
+				// get three other answers
+				// start with this.notes and remove the correct answer
+				var answernotes = [];
+				for (var i = 0; i < this.notes.length; i++ ){
+					if ( this.notes[i] !== correct ){
+						answernotes.push( this.notes[i] );
+					}
+				}
+				// shuffle remaining
+				answernotes.sort(function() {
+					return 0.5 - Math.random()
+				});
+				// take first three
+				for (var i = 0; i < 3; i++ ) {
+					this.answers.push( { 
+						value: answernotes[i],
+						state: 'on',
+						iscorrect: false
+					} );
+
+				}
+				// console.table(answers);
+				// make sure answers are unique
+
+
+				// and randomize the answers
+				this.answers.sort(function() { 
+					return 0.5 - Math.random() 
+				});
+			},
+
+			getRandomQuestion(){
+				// console.log('getRandomQuestion() called');
 				this.note.clef = this.clefs[0];
 				//clef - if set to both, pick one randomly, otherwise, send the setting in
 				if ( this.test_clef === 'both' ) {
@@ -284,7 +326,7 @@ var app = new Vue({
 					})
 				);
 
-				this.randomize_answers();
+				this.getRandomAnswers();
 			},
 
 			getReport(){
@@ -323,7 +365,7 @@ var app = new Vue({
 				//if practice mode
 				if ( this.mode === 'practice' ) {
 					//reset the values
-					this.getRandomValues();
+					this.getRandomQuestion();
 					this.state = 'on';
 				} else { // test mode
 				// if cards are out
@@ -332,7 +374,7 @@ var app = new Vue({
 						this.state = 'off';
 					} else {
 						//reset the values
-						this.getRandomValues();
+						this.getRandomQuestion();
 						this.state = 'on';
 					}
 				}
@@ -374,34 +416,6 @@ var app = new Vue({
 				return num;
 			},
 
-			randomize_answers(){
-				// console.log('randomize_answers() called');
-				this.answers = [];
-				//get the correct answer
-				var correct = this.getAnswer();
-
-				this.answers.push( { 
-					value: correct,
-					state: 'on', //valid, correct 
-					iscorrect: true
-				} );
-				//get three other answers - random differences from the range
-				while( this.answers.length < 4 ) {
-					this.answers.push( { 
-						value: this.notes[Math.floor(Math.random() * this.notes.length)],
-						state: 'on',
-						iscorrect: false
-					} );
-
-				}
-				// console.table(answers);
-				// make sure answers are unique
-				// and randomize the answers
-				this.answers.sort(function() { 
-					return 0.5 - Math.random() 
-				});
-			},
-
 			randomNumber(x){
 				if (typeof x === 'undefined') { x = 10; }
 				return Math.floor(Math.random() * x) + 1;
@@ -423,7 +437,7 @@ var app = new Vue({
 				this.progressrecord = [];
 				this.starttime = new Date();
 
-				this.getRandomValues();
+				this.getRandomQuestion();
 
 			},
 
